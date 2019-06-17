@@ -1,0 +1,16 @@
+{
+    "stats_per_batch" : 3,
+    "dataset" : "CollegeMsg",
+    "dataset_path" : "/Users/raunak/Documents/Datasets/temporal-networks-snap/CollegeMsg.txt",
+    "mode" : "train",
+    "neg_examples_path" : "/Users/raunak/Documents/Datasets/temporal-networks-snap/CollegeMsg_neg_examples_train.txt",
+    "task" : "link_prediction",
+    "agg_class" : "MaxPoolAggregator",
+    "cuda" : "True",
+    "hidden_dims" : [64],
+    "num_samples" : -1,
+    "batch_size" : 16,
+    "epochs" : 2,
+    "lr" : 5e-2,
+    "weight_decay" : 0e-3
+}
