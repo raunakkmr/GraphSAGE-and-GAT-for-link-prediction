@@ -1,4 +1,5 @@
 import argparse
+import importlib
 import json
 import sys
 
@@ -53,8 +54,8 @@ def get_dataset(args):
     """
     task, dataset_name, *dataset_args = args
     if task == 'link_prediction':
-        if dataset_name == 'CollegeMsg':
-            dataset = link_prediction.CollegeMsg(*dataset_args)
+        class_attr = getattr(importlib.import_module('datasets.link_prediction'), dataset_name)
+        dataset = class_attr(*dataset_args)
 
     return dataset
 
