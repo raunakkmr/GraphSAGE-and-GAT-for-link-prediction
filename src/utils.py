@@ -71,6 +71,8 @@ def get_fname(config):
     fname : str
         The filename for the saved model.
     """
+    duplicate_examples = config['duplicated_examples']
+    repeat_examples = config['repeat_examples']
     agg_class = config['agg_class']
     hidden_dims_str = '_'.join([str(x) for x in config['hidden_dims']])
     num_samples = config['num_samples']
@@ -78,9 +80,9 @@ def get_fname(config):
     epochs = config['epochs']
     lr = config['lr']
     weight_decay = config['weight_decay']
-    fname = 'graphsage_agg_class_{}_hidden_dims_{}_num_samples_{}_batch_size_{}_epochs_{}_lr_{}_weight_decay_{}.pth'.format(
+    fname = 'graphsage_agg_class_{}_hidden_dims_{}_num_samples_{}_batch_size_{}_epochs_{}_lr_{}_weight_decay_{}_duplicate_{}_repeat_{}.pth'.format(
         agg_class, hidden_dims_str, num_samples, batch_size, epochs, lr,
-        weight_decay)
+        weight_decay, duplicate_examples, repeat_examples)
 
     return fname
 
@@ -99,22 +101,29 @@ def parse_args():
     parser.add_argument('--stats_per_batch', type=int, default=16,
                         help='print loss and accuracy after how many batches, default: 16')
 
-    parser.add_argument('--dataset', type=str, choices=['cora'], default='cora',
-                        help='name of the dataset, default=cora')
+    parser.add_argument('--dataset', type=str,
+                        choices=['CollegeMsg', 'BitcoinAlpha'],
+                        required=True,
+                        help='name of the dataset')
     parser.add_argument('--dataset_path', type=str,
-                        default='/Users/raunak/Documents/Datasets/Cora', 
+                        required=True,
                         help='path to dataset')
+    parser.add_argument('--neg_examples_path', type=str,
+                        default='',
+                        help='path to file with negative examples, default=''')
+    parser.add_argument('--duplicate_examples', action='store_true',
+                        help='whether to allow duplicate edges in the list of positive examples, default=False')
+    parser.add_argument('--repeat_examples', action='store_true',
+                        help='whether to use positive examples that have already been seen during graph construction or training, default=False')
     parser.add_argument('--self_loop', action='store_true',
                         help='whether to add self loops to adjacency matrix, default=False')
     parser.add_argument('--normalize_adj', action='store_true',
                         help='whether to normalize adj like in gcn, default=False')
-    parser.add_argument('--transductive', action='store_true',
-                        help='whether to use all nodes while training, default=False')
 
     parser.add_argument('--task', type=str,
-                        choices=['unsupervised', 'node_classification'],
-                        default='node_classification',
-                        help='type of task, default=node_classification')
+                        choices=['unsupervised', 'link_prediction'],
+                        default='link_prediction',
+                        help='type of task, default=link_prediction')
 
     parser.add_argument('--agg_class', type=str,
                         choices=[MeanAggregator, LSTMAggregator, MaxPoolAggregator, MeanPoolAggregator],
@@ -126,15 +135,15 @@ def parse_args():
                         help='dropout out, currently only for GCN, default: 0.5')
     parser.add_argument('--hidden_dims', type=int, nargs="*",
                         help='dimensions of hidden layers, length should be equal to num_layers, specify through config.json')
-    parser.add_argument('--num_samples', type=int, default=25,
-                        help='number of neighbors to sample, default=25')
+    parser.add_argument('--num_samples', type=int, default=-1,
+                        help='number of neighbors to sample, default=-1')
 
-    parser.add_argument('--batch_size', type=int, default=8,
-                        help='training batch size, default=8')
-    parser.add_argument('--epochs', type=int, default=10,
-                        help='number of training epochs, default=10')
-    parser.add_argument('--lr', type=float, default=1e-3,
-                        help='learning rate, default=1e-3')
+    parser.add_argument('--batch_size', type=int, default=32,
+                        help='training batch size, default=32')
+    parser.add_argument('--epochs', type=int, default=2,
+                        help='number of training epochs, default=2')
+    parser.add_argument('--lr', type=float, default=1e-4,
+                        help='learning rate, default=1e-4')
     parser.add_argument('--weight_decay', type=float, default=5e-4,
                         help='weight decay, default=5e-4')
 
