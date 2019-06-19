@@ -49,6 +49,7 @@ class TemporalNetworkDataset(Dataset):
         print('--------------------------------')
         print('Reading dataset from {}'.format(path))
         edges_all = self._read_from_file(path)
+        edges_all = edges_all[edges_all[:, 2].argsort()]
         print('Finished reading data.')
 
         print('Setting up graph.')
