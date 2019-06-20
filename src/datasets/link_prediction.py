@@ -11,14 +11,14 @@ class TemporalNetworkDataset(Dataset):
     def __init__(self, path, generate_neg_examples=False, mode='train',
                  duplicate_examples=False, repeat_examples=False,
                  num_layers=2, self_loop=False, normalize_adj=False,
-                 data_split=[0.50, 0.20, 0.05, 0.25]):
+                 data_split=[0.30, 0.20, 0.25, 0.25]):
         """
         Parameters
         ----------
         path : str
             Path to the dataset file. For example, CollegeMsg.txt, etc.
         neg_examples: Boolean 
-            Whether to generate negative examples or read from file. If True, then negative examples are generated and saved in the same directory as the dataset file as ${dataset file name}_neg_examples_${mode}.txt. If False, then examples are read from a file that should be named and located as described. Default: False.
+            Whether to generate negative examples or read from file. If True, then negative examples are generated and saved in the same directory as the dataset file as ${dataset file name}_neg_examples_${mode}_${duplicate_examples}_${repeat_examples}.txt. If False, then examples are read from a file that should be named and located as described. Default: False.
         mode : str
             One of train, val or test. Default: train.
         duplicate_examples : Boolean
@@ -105,7 +105,7 @@ class TemporalNetworkDataset(Dataset):
         if not duplicate_examples:
             pos_examples = np.unique(pos_examples, axis=0)
 
-        neg_path = os.path.splitext(path)[0] + '_neg_examples_{}.txt'.format(mode)
+        neg_path = os.path.splitext(path)[0] + '_neg_examples_{}_{}_{}.txt'.format(mode, duplicate_examples, repeat_examples)
         if not generate_neg_examples:
             neg_examples = np.loadtxt(neg_path)
         else:
