@@ -134,7 +134,7 @@ class TemporalNetworkDataset(Dataset):
             np.savetxt(neg_path, neg_examples)
         neg_examples = np.array(neg_examples, dtype=np.int64)
 
-        pos_examples, neg_examples = pos_examples[:1024], neg_examples[:1024]
+        # pos_examples, neg_examples = pos_examples[:1024], neg_examples[:1024]
 
         x = np.vstack((pos_examples, neg_examples))
         y = np.concatenate((np.ones(pos_examples.shape[0]),
