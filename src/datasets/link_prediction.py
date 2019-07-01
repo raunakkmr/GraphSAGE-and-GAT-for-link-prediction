@@ -69,10 +69,11 @@ class TemporalNetworkDataset(Dataset):
         self.n = len(vertex_id)
         self.m_s, self.m_t = edges_s.shape[0], edges_t.shape[0]
 
-        adj = sp.coo_matrix((np.ones(self.m_s), (edges_s[:, 1], edges_s[:, 0])),
+        adj = sp.coo_matrix((np.ones(self.m_s), (edges_s[:, 0], edges_s[:, 1])),
                             shape=(self.n,self.n),
                             dtype=np.float32)
-        # adj += adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
+        # Symmetric.
+        adj += adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
         if self_loop:
             adj += sp.eye(self.n)
         if normalize_adj:
@@ -87,6 +88,8 @@ class TemporalNetworkDataset(Dataset):
 
         nbrs_t = [[] for _ in range(self.n)]
         for (u, v, t) in edges_t:
+            nbrs_t[u].append((v, t))
+            # Symmetric.
             nbrs_t[v].append((u, t))
         nbrs_t = np.array(nbrs_t)
 
@@ -99,6 +102,12 @@ class TemporalNetworkDataset(Dataset):
             if v not in timestamps[u].keys():
                 timestamps[u][v] = []
             timestamps[u][v].append(t)
+            # Symmetric.
+            if v not in timestamps.keys():
+                timestamps[v] = dict()
+            if u not in timestamps[v].keys():
+                timestamps[v][u] = []
+            timestamps[v][u].append(t)
         self.timestamps = timestamps
         print('Finished setting up graph.')
 
@@ -106,7 +115,9 @@ class TemporalNetworkDataset(Dataset):
         if repeat_examples:
             pos_seen = set()
         else:
-            pos_seen = set(tuple(e) for e in edges_s)
+            pos_seen = set(tuple([u,v]) for (u,v) in edges_s)
+            # Symmetric.
+            pos_seen |= set(tuple([v,u]) for (u,v) in edges_s)
         pos_examples = pos_examples[:, :2]
         pos_examples = np.array([row for row in pos_examples \
                                  if (row[0] < self.n) and
