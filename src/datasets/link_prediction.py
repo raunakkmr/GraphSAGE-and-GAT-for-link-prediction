@@ -81,6 +81,7 @@ class TemporalNetworkDataset(Dataset):
             adj = degrees.dot(adj.dot(degrees))
 
         self.adj = adj.tolil()
+        self.edges_s = edges_s
         self.nbrs_s = self.adj.rows
         self.features = torch.from_numpy(np.eye(self.n)).float()
 
@@ -90,6 +91,15 @@ class TemporalNetworkDataset(Dataset):
         nbrs_t = np.array(nbrs_t)
 
         self.nbrs_t = nbrs_t
+
+        timestamps = dict()
+        for (u, v, t) in edges_t:
+            if u not in timestamps.keys():
+                timestamps[u] = dict()
+            if v not in timestamps[u].keys():
+                timestamps[u][v] = []
+            timestamps[u][v].append(t)
+        self.timestamps = timestamps
         print('Finished setting up graph.')
 
         print('Setting up examples.')
@@ -101,7 +111,8 @@ class TemporalNetworkDataset(Dataset):
         pos_examples = np.array([row for row in pos_examples \
                                  if (row[0] < self.n) and
                                  (row[1] < self.n) and
-                                 ((row[0], row[1]) not in pos_seen)])
+                                 ((row[0], row[1]) not in pos_seen) and
+                                 ((row[1], row[0]) not in pos_seen)])
         if not duplicate_examples:
             pos_examples = np.unique(pos_examples, axis=0)
 
@@ -122,6 +133,8 @@ class TemporalNetworkDataset(Dataset):
                 neg_examples.append([u, v])
             np.savetxt(neg_path, neg_examples)
         neg_examples = np.array(neg_examples, dtype=np.int64)
+
+        pos_examples, neg_examples = pos_examples[:1024], neg_examples[:1024]
 
         x = np.vstack((pos_examples, neg_examples))
         y = np.concatenate((np.ones(pos_examples.shape[0]),
@@ -244,7 +257,11 @@ class BitcoinAlpha(TemporalNetworkDataset):
 class FBForum(TemporalNetworkDataset):
 
     def _read_from_file(self, path):
-        return np.loadtxt(path, delimiter=',', dtype=np.int64)
+        with open(path, 'r') as f:
+            lines = f.readlines()
+        lines = [[int(float(x)) for x in line.strip().split(',')] for line in lines]
+        return np.array(lines)
+        # return np.loadtxt(path, delimiter=',', dtype=np.int64)
 
 class IAContact(TemporalNetworkDataset):
 

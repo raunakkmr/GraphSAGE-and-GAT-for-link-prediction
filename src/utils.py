@@ -8,6 +8,7 @@ import torch.nn as nn
 
 from datasets import link_prediction
 from layers import MeanAggregator, LSTMAggregator, MaxPoolAggregator, MeanPoolAggregator
+import models
 
 def get_agg_class(agg_class):
     """
@@ -85,6 +86,34 @@ def get_fname(config):
         weight_decay, duplicate_examples, repeat_examples)
 
     return fname
+
+# def get_model(config):
+#     """
+#     Parameters
+#     ----------
+#     config : dict
+#         A dictionary with all the arguments and flags.
+# 
+#     Returns
+#     -------
+#     model : torch.nn.Module
+#         The model.
+#     """
+#     if config['model'] == 'GraphSAGE':
+#        agg_class = get_agg_class(config['agg_class'])
+#        model = models.GraphSAGE(config['input_dim'], config['hidden_dims'],
+#                                 config['output_dim'], config['dropout'],
+#                                 agg_class, config['num_samples'],
+#                                 config['device'])
+#     elif config['model'] == 'GAT':
+#         model = models.GAT(config['input_dim'], config['hidden_dims'],
+#                            config['output_dim'], config['num_heads'],
+#                            config['dropout'], config['device'])
+# 
+#     model.to(config['device']) 
+# 
+#     return model
+
 
 def parse_args():
     """
