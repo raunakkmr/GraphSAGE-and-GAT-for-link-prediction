@@ -1,34 +1,34 @@
-| Dataset                      | Model      | Temporal | Duplicates | Repeats | ROC-AUC Score |
-| ---------------------------- | :--------: | :------: | :--------: | :-----: | ------------: |
-| IAContact                    | GraphSAGE  | No       | True       | True    | 0.9383        |
-| IAContact                    | GraphSAGE  | No       | True       | False   | 0.7897        |
-| IAContact                    | GraphSAGE  | No       | False      | False   | 0.7668        |
-| IAContact                    | GraphSAGE  | No       | False      | True    | 0.9054        |
-| IAContact                    | GAT        | No       | True       | True    | NA            |
-| IAContact                    | GAT        | No       | True       | False   | NA            |
-| IAContact                    | GAT        | No       | False      | False   | NA            |
-| IAContact                    | GAT        | No       | False      | True    | NA            |
-| IAContactsHypertext09        | GraphSAGE  | No       | True       | True    | 0.6743        |
-| IAContactsHypertext09        | GraphSAGE  | No       | True       | False   | NA            |
-| IAContactsHypertext09        | GraphSAGE  | No       | False      | False   | NA            |
-| IAContactsHypertext09        | GraphSAGE  | No       | False      | True    | NA            |
-| IAContactsHypertext09        | GAT        | No       | True       | True    | NA            |
-| IAContactsHypertext09        | GAT        | No       | True       | False   | NA            |
-| IAContactsHypertext09        | GAT        | No       | False      | False   | NA            |
-| IAContactsHypertext09        | GAT        | No       | False      | True    | NA            |
-| IAEnronEmployees             | GraphSAGE  | No       | True       | True    | NA            |
-| IAEnronEmployees             | GraphSAGE  | No       | True       | False   | NA            |
-| IAEnronEmployees             | GraphSAGE  | No       | False      | False   | NA            |
-| IAEnronEmployees             | GraphSAGE  | No       | False      | True    | NA            |
-| IAEnronEmployees             | GAT        | No       | True       | True    | NA            |
-| IAEnronEmployees             | GAT        | No       | True       | False   | NA            |
-| IAEnronEmployees             | GAT        | No       | False      | False   | NA            |
-| IAEnronEmployees             | GAT        | No       | False      | True    | NA            |
-| IARadoslaw                   | GraphSAGE  | No       | True       | True    | NA            |
-| IARadoslaw                   | GraphSAGE  | No       | True       | False   | NA            |
-| IARadoslaw                   | GraphSAGE  | No       | False      | False   | NA            |
-| IARadoslaw                   | GraphSAGE  | No       | False      | True    | NA            |
-| IARadoslaw                   | GAT        | No       | True       | True    | NA            |
-| IARadoslaw                   | GAT        | No       | True       | False   | NA            |
-| IARadoslaw                   | GAT        | No       | False      | False   | NA            |
-| IARadoslaw                   | GAT        | No       | False      | True    | NA            |
+| Dataset                      | Model      | Temporal | Duplicates | Repeats | ROC-AUC Score | CTNDE |
+| ---------------------------- | :--------: | :------: | :--------: | :-----: | :-----------: | ----: |
+| IAContact                    | GraphSAGE  | No       | True       | True    | 0.9383        | 0.913 |
+| IAContact                    | GraphSAGE  | No       | True       | False   | 0.7897        | NA    |
+| IAContact                    | GraphSAGE  | No       | False      | False   | 0.7668        | NA    |
+| IAContact                    | GraphSAGE  | No       | False      | True    | 0.9054        | NA    |
+| IAContact                    | GAT        | No       | True       | True    | NA            | 0.913 |
+| IAContact                    | GAT        | No       | True       | False   | NA            | NA    |
+| IAContact                    | GAT        | No       | False      | False   | NA            | NA    |
+| IAContact                    | GAT        | No       | False      | True    | NA            | NA    |
+| IAContactsHypertext09        | GraphSAGE  | No       | True       | True    | 0.6920        | 0.671 |
+| IAContactsHypertext09        | GraphSAGE  | No       | True       | False   | 0.6952        | NA    |
+| IAContactsHypertext09        | GraphSAGE  | No       | False      | False   | 0.5871        | NA    |
+| IAContactsHypertext09        | GraphSAGE  | No       | False      | True    | 0.6151        | NA    |
+| IAContactsHypertext09        | GAT        | No       | True       | True    | NA            | 0.671 |
+| IAContactsHypertext09        | GAT        | No       | True       | False   | NA            | NA    |
+| IAContactsHypertext09        | GAT        | No       | False      | False   | NA            | NA    |
+| IAContactsHypertext09        | GAT        | No       | False      | True    | NA            | NA    |
+| IAEnronEmployees             | GraphSAGE  | No       | True       | True    | NA            | 0.777 |
+| IAEnronEmployees             | GraphSAGE  | No       | True       | False   | NA            | NA    |
+| IAEnronEmployees             | GraphSAGE  | No       | False      | False   | NA            | NA    |
+| IAEnronEmployees             | GraphSAGE  | No       | False      | True    | NA            | NA    |
+| IAEnronEmployees             | GAT        | No       | True       | True    | NA            | 0.777 |
+| IAEnronEmployees             | GAT        | No       | True       | False   | NA            | NA    |
+| IAEnronEmployees             | GAT        | No       | False      | False   | NA            | NA    |
+| IAEnronEmployees             | GAT        | No       | False      | True    | NA            | NA    |
+| IARadoslaw                   | GraphSAGE  | No       | True       | True    | NA            | 0.811 |
+| IARadoslaw                   | GraphSAGE  | No       | True       | False   | NA            | NA    |
+| IARadoslaw                   | GraphSAGE  | No       | False      | False   | NA            | NA    |
+| IARadoslaw                   | GraphSAGE  | No       | False      | True    | NA            | NA    |
+| IARadoslaw                   | GAT        | No       | True       | True    | NA            | 0.811 |
+| IARadoslaw                   | GAT        | No       | True       | False   | NA            | NA    |
+| IARadoslaw                   | GAT        | No       | False      | False   | NA            | NA    |
+| IARadoslaw                   | GAT        | No       | False      | True    | NA            | NA    |
