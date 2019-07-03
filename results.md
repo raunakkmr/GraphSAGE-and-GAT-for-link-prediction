@@ -4,7 +4,7 @@
 | IAContact                    | GraphSAGE  | No       | True       | False   | 0.7897        | NA    |
 | IAContact                    | GraphSAGE  | No       | False      | False   | 0.7668        | NA    |
 | IAContact                    | GraphSAGE  | No       | False      | True    | 0.9054        | NA    |
-| IAContact                    | GAT        | No       | True       | True    | NA            | 0.913 |
+| IAContact                    | GAT        | No       | True       | True    | 0.9118        | 0.913 |
 | IAContact                    | GAT        | No       | True       | False   | NA            | NA    |
 | IAContact                    | GAT        | No       | False      | False   | NA            | NA    |
 | IAContact                    | GAT        | No       | False      | True    | NA            | NA    |
@@ -18,7 +18,7 @@
 | IAContactsHypertext09        | GAT        | No       | False      | True    | NA            | NA    |
 | IAEnronEmployees             | GraphSAGE  | No       | True       | True    | NA            | 0.777 |
 | IAEnronEmployees             | GraphSAGE  | No       | True       | False   | NA            | NA    |
-| IAEnronEmployees             | GraphSAGE  | No       | False      | False   | NA            | NA    |
+| IAEnronEmployees             | GraphSAGE  | No       | False      | False   | 0.6804        | NA    |
 | IAEnronEmployees             | GraphSAGE  | No       | False      | True    | NA            | NA    |
 | IAEnronEmployees             | GAT        | No       | True       | True    | NA            | 0.777 |
 | IAEnronEmployees             | GAT        | No       | True       | False   | NA            | NA    |

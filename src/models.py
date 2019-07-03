@@ -7,7 +7,7 @@ from layers import MeanAggregator, LSTMAggregator, MaxPoolAggregator, MeanPoolAg
 
 def init_weights(m):
     if type(m) == nn.Linear:
-        torch.nn.init.xavier_uniform(m.weight, gain=1.414)
+        torch.nn.init.xavier_uniform_(m.weight, gain=1.414)
 
 class GraphSAGE(nn.Module):
 
@@ -91,9 +91,9 @@ class GraphSAGE(nn.Module):
             out = torch.cat((out[cur_mapped_nodes, :], aggregate), dim=1)
             out = self.fcs[k](out)
             if k+1 < self.num_layers:
-                out = self.bns[k](out)
                 out = self.relu(out)
-                # out = self.dropout(out)
+                out = self.bns[k](out)
+                out = self.dropout(out)
                 out = out.div(out.norm(dim=1, keepdim=True)+1e-6)
 
         return out
@@ -177,90 +177,3 @@ class GAT(nn.Module):
                 out = out.mean(dim=0).reshape(len(nodes), self.output_dim)
 
         return out
-
-# class GAT(nn.Module):
-# 
-#     def __init__(self, input_dim, hidden_dims, output_dim, num_heads,
-#                  dropout=0.5, device='cpu'):
-#         """
-#         Parameters
-#         ----------
-#         input_dim : int
-#             Dimension of input node features.
-#         hidden_dims : list of ints
-#             Dimension of hidden layers. Must be non empty.
-#         output_dim : int
-#             Dimension of output node features.
-#         num_heads : list of ints
-#             Number of attention heads in each hidden layer and output layer. Must be non empty. Note that len(num_heads) = len(hidden_dims)+1.
-#         dropout : float
-#             Dropout rate. Default: 0.5.
-#         device : str
-#             'cpu' or 'cuda:0'. Default: 'cpu'.
-#         """
-#         super().__init__()
-# 
-#         self.input_dim = input_dim
-#         self.hidden_dims = hidden_dims
-#         self.output_dim = output_dim
-#         self.num_heads = num_heads
-#         self.device = device
-#         self.num_layers = len(hidden_dims) + 1
-# 
-#         dims = [input_dim] + [d*nh for (d, nh) in zip(hidden_dims, num_heads[:-1])] + [output_dim*num_heads[-1]]
-#         fc_input_dims = dims[:-1]
-#         fc_output_dims = [d // nh for (d, nh) in zip(dims[1:], num_heads)]
-# 
-#         self.fcs = nn.ModuleList([nn.Linear(i, o) for (i, o) in zip(fc_input_dims, fc_output_dims)])
-#         self.attn = nn.ModuleList([(layers.GraphAttention(d, nh, dropout)) for (d, nh) in zip(fc_output_dims, num_heads)])
-# 
-#         # self.bns = nn.ModuleList([nn.BatchNorm1d(d) for d in hidden_dims])
-#         self.bns = nn.ModuleList([nn.BatchNorm1d(d*nh) for (d, nh) in zip(hidden_dims, num_heads[:-1])])
-# 
-#         self.dropout = nn.Dropout(dropout)
-# 
-#         self.relu = nn.ReLU()
-#         self.elu = nn.ELU()
-# 
-#     def forward(self, features, node_layers, mappings, rows):
-#         """
-#         Parameters
-#         ----------
-#         features : torch.Tensor
-#             An (n' x input_dim) tensor of input node features.
-#         node_layers : list of numpy array
-#             node_layers[i] is an array of the nodes in the ith layer of the
-#             computation graph.
-#         mappings : list of dictionary
-#             mappings[i] is a dictionary mapping node v (labelled 0 to |V|-1)
-#             in node_layers[i] to its position in node_layers[i]. For example,
-#             if node_layers[i] = [2,5], then mappings[i][2] = 0 and
-#             mappings[i][5] = 1.
-#         rows : numpy array
-#             rows[i] is an array of neighbors of node i.
-# 
-#         Returns
-#         -------
-#         out : torch.Tensor
-#             An (len(node_layers[-1]) x output_dim) tensor of output node features.
-#         """
-#         out = features
-#         for k in range(self.num_layers):
-#             nodes = node_layers[k+1]
-#             mapping = mappings[k]
-#             init_mapped_nodes = np.array([mappings[0][v] for v in nodes], dtype=np.int64)
-#             cur_rows = rows[init_mapped_nodes]
-#             out = self.fcs[k](out)
-#             out = self.dropout(out)
-#             out = self.attn[k](out, nodes, mapping, cur_rows)
-#             if k+1 < self.num_layers:
-#                 # out = [self.bns[k](o) for o in out]
-#                 out = [self.elu(o) for o in out]
-#                 out = torch.cat(tuple(out), dim=1)
-#                 out = self.bns[k](out)
-#                 out = out.div(out.norm(dim=1, keepdim=True)+1e-6)
-#             else:
-#                 out = torch.cat(tuple([x.flatten().unsqueeze(0) for x in out]), dim=0)
-#                 out = out.mean(dim=0).reshape(len(nodes), self.output_dim)
-# 
-#         return out

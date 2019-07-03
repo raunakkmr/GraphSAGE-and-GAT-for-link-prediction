@@ -95,19 +95,25 @@ class TemporalNetworkDataset(Dataset):
 
         self.nbrs_t = nbrs_t
 
+        # TODO : Modify to time since last interaction rather than just time?
+        last_time = np.max(edges_t[:, -1]) + 1
         timestamps = dict()
         for (u, v, t) in edges_t:
             if u not in timestamps.keys():
                 timestamps[u] = dict()
             if v not in timestamps[u].keys():
                 timestamps[u][v] = []
-            timestamps[u][v].append(t)
+            timestamps[u][v].append(last_time - t)
             # Symmetric.
             if v not in timestamps.keys():
                 timestamps[v] = dict()
             if u not in timestamps[v].keys():
                 timestamps[v][u] = []
-            timestamps[v][u].append(t)
+            timestamps[v][u].append(last_time - t)
+        for u in range(self.n):
+            if u not in timestamps.keys():
+                timestamps[u] = dict()
+            timestamps[u][u] = [1]
         self.timestamps = timestamps
         print('Finished setting up graph.')
 
