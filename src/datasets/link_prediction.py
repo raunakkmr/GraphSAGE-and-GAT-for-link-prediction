@@ -11,7 +11,7 @@ class TemporalNetworkDataset(Dataset):
     def __init__(self, path, generate_neg_examples=False, mode='train',
                  duplicate_examples=False, repeat_examples=False,
                  num_layers=2, self_loop=False, normalize_adj=False,
-                 data_split=[0.30, 0.20, 0.25, 0.25]):
+                 data_split=[0.42, 0.23, 0.10, 0.25]):
         """
         Parameters
         ----------
