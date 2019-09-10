@@ -1,0 +1,30 @@
+{
+    "task" : "link_prediction",
+    
+    "dataset" : "IAContactsHypertext",
+    "dataset_path" : "/Users/raunak/Documents/Datasets/temporal-networks-network-repository/ia-contacts_hypertext2009/ia-contacts_hypertext2009.edges",
+    "mode" : "train",
+    "generate_neg_examples" : "False",
+    
+    "duplicate_examples" : "True",
+    "repeat_examples" : "True",
+    
+    "self_loop" : "True",
+    "normalize_adj" : "False",
+    
+    "cuda" : "True",
+    "model" : "GAT",
+    "num_heads" : [1, 1],
+    "hidden_dims" : [64],
+    "dropout" : 0,
+    
+    "epochs" : 3,
+    "batch_size" : 32,
+    "lr" : 5e-4,
+    "weight_decay" : 5e-3,
+    "stats_per_batch" : 3,
+    "visdom" : "True",
+    
+    "load" : "False",
+    "save" : "False"
+}

@@ -72,7 +72,7 @@ def get_fname(config):
     fname : str
         The filename for the saved model.
     """
-    duplicate_examples = config['duplicated_examples']
+    duplicate_examples = config['duplicate_examples']
     repeat_examples = config['repeat_examples']
     agg_class = config['agg_class']
     hidden_dims_str = '_'.join([str(x) for x in config['hidden_dims']])
@@ -132,10 +132,10 @@ def parse_args():
 
     parser.add_argument('--dataset', type=str,
                         choices=['CollegeMsg', 'BitcoinAlpha'],
-                        required=True,
+                        # required=True,
                         help='name of the dataset')
     parser.add_argument('--dataset_path', type=str,
-                        required=True,
+                        # required=True,
                         help='path to dataset')
     parser.add_argument('--neg_examples_path', type=str,
                         default='',
@@ -187,6 +187,12 @@ def parse_args():
         with open(config['json']) as f:
             json_dict = json.load(f)
             config.update(json_dict)
+
+            for (k, v) in config.items():
+                if config[k] == 'True':
+                    config[k] = True
+                elif config[k] == 'False':
+                    config[k] = False
 
     config['num_layers'] = len(config['hidden_dims']) + 1
 

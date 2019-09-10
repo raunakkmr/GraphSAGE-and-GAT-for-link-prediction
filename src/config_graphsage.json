@@ -1,0 +1,31 @@
+{
+    "task" : "link_prediction",
+    
+    "dataset" : "IAEnronEmployees",
+    "dataset_path" : "/Users/raunak/Documents/Datasets/temporal-networks-network-repository/ia-enron-employees/ia-enron-employees.edges",
+    "mode" : "train",
+    "generate_neg_examples" : "True",
+    
+    "duplicate_examples" : "False",
+    "repeat_examples" : "True",
+    
+    "self_loop" : "True",
+    "normalize_adj" : "False",
+    
+    "cuda" : "True",
+    "model" : "GraphSAGE",
+    "agg_class" : "MaxPoolAggregator",
+    "hidden_dims" : [64],
+    "dropout" : 0,
+    "num_samples" : -1,
+    
+    "epochs" : 9,
+    "batch_size" : 32,
+    "lr" : 5e-4,
+    "weight_decay" : 5e-4,
+    "stats_per_batch" : 3,
+    "visdom" : "True",
+    
+    "load" : "False",
+    "save" : "False"
+}

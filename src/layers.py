@@ -58,7 +58,10 @@ class Aggregator(nn.Module):
             sampled_rows = [_choice(row, _min(_len(row), num_samples), _len(row) < num_samples) for row in mapped_rows]
 
         n = _len(nodes)
-        out = torch.zeros(n, self.output_dim).to(self.device)
+        if self.__class__.__name__ == 'LSTMAggregator':
+            out = torch.zeros(n, 2*self.output_dim).to(self.device)
+        else:
+            out = torch.zeros(n, self.output_dim).to(self.device)
         for i in range(n):
             if _len(sampled_rows[i]) != 0:
                 out[i, :] = self._aggregate(features[sampled_rows[i], :])
@@ -173,9 +176,10 @@ class LSTMAggregator(Aggregator):
             Dimension of output node features. Used for defining LSTM layer. Currently only works when output_dim = input_dim.
 
         """
-        super(LSTMAggregator, self).__init__(input_dim, output_dim, device)
+        # super(LSTMAggregator, self).__init__(input_dim, output_dim, device)
+        super().__init__(input_dim, output_dim, device)
 
-        self.lstm = nn.LSTM(input_dim, output_dim, bidirectional=True)
+        self.lstm = nn.LSTM(input_dim, output_dim, bidirectional=True, batch_first=True)
 
     def _aggregate(self, features):
         """
@@ -194,6 +198,7 @@ class LSTMAggregator(Aggregator):
 
         out, _ = self.lstm(features)
         out = out.squeeze(0)
+        out = torch.sum(out, dim=0)
 
         return out
 
